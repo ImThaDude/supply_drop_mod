@@ -4,8 +4,8 @@ local food_amt = GetModConfigData("food_amt")
 local armor_amt = GetModConfigData("armor_amt")
 local hambat_amt = GetModConfigData("hambat_amt")
 local lives_amt = GetModConfigData("lives_amt")
-local day_count = 0
 local range = 4
+day_count = 0
 announced1 = false;
 announced2 = false;
 announced3 = false;
@@ -14,69 +14,78 @@ announced4 = false;
 local function DropSupplyCrate(inst)
 	if GLOBAL.TheWorld.state.isnight then
 		if day_count % day_amt == 0 then
-		
+			
+			day_count = day_count + 1			
+
 			if GLOBAL.GetClosestInstWithTag("campfire", inst, 10) == nil then
 				
 				local pos = GLOBAL.Vector3(inst.Transform:GetWorldPosition())
 				local all_nearby_players = GLOBAL.FindPlayersInRange(pos.x, pos.y, pos.z, 5, true)
 				local playerNum = table.getn(all_nearby_players)
 				
-				if not announced1 then
-					GLOBAL.TheNet:Announce(all_nearby_players[math.random(1, playerNum)]:GetDisplayName() .. " calls out for yo boi Thingymajigger. Thingymajigger gave you some of that good stuff in yo pit. Get em boi.")
-					announced1 = true
-					end
-			
-				local amta = math.random(0, playerNum * food_amt)
-				local amtb = math.random(0, playerNum * armor_amt)
-				local amtc = math.random(0, playerNum * hambat_amt)
-				local amtd = math.random(0, playerNum * lives_amt)
-			
-				for i = 0, amta, 1
-				do
-					local pos = GLOBAL.Vector3(inst.Transform:GetWorldPosition())
-					local offset = (GLOBAL.FindWalkableOffset(pos,math.random()*GLOBAL.PI*2, range, false))
-					if offset == nil then
-					       	return
+				if playerNum > 0 then
+					if not announced1 then
+						GLOBAL.TheNet:Announce(all_nearby_players[math.random(1, playerNum)]:GetDisplayName() .. " calls out for yo boi Thingymajigger. Thingymajigger gave you some of that good stuff in yo pit. Get em boi.")
+						announced1 = true
 						end
-					pos=pos+offset
-					local unit1= GLOBAL.SpawnPrefab("meat_dried")
-					unit1.Transform:SetPosition(pos:Get())
-					end
-			
-				for i = 1, amtb, 1
-				do
-					local pos = GLOBAL.Vector3(inst.Transform:GetWorldPosition())
-					local offset = (GLOBAL.FindWalkableOffset(pos,math.random()*GLOBAL.PI*2, range, false))
-					if offset == nil then
-			       			return
+				
+					local amta = math.random(0, playerNum * food_amt)
+					local amtb = math.random(0, playerNum * armor_amt)
+					local amtc = math.random(0, playerNum * hambat_amt)
+					local amtd = math.random(0, playerNum * lives_amt)
+				
+					for i = 0, amta, 1
+					do
+						local pos = GLOBAL.Vector3(inst.Transform:GetWorldPosition())
+						local offset = (GLOBAL.FindWalkableOffset(pos,math.random()*GLOBAL.PI*2, range, false))
+						if offset == nil then
+						       	return
+							end
+						pos=pos+offset
+						local unit1= GLOBAL.SpawnPrefab("meat_dried")
+						unit1.Transform:SetPosition(pos:Get())
 						end
-					pos=pos+offset
-					local unit2= GLOBAL.SpawnPrefab("footballhat")
-					unit2.Transform:SetPosition(pos:Get())
-					end
-			
-				for i = 1, amtc, 1
-				do
-					local pos = GLOBAL.Vector3(inst.Transform:GetWorldPosition())
-					local offset = (GLOBAL.FindWalkableOffset(pos,math.random()*GLOBAL.PI*2, range, false))
-					if offset == nil then
-					       	return
+				
+					for i = 1, amtb, 1
+					do
+						local pos = GLOBAL.Vector3(inst.Transform:GetWorldPosition())
+						local offset = (GLOBAL.FindWalkableOffset(pos,math.random()*GLOBAL.PI*2, range, false))
+						if offset == nil then
+			       				return
+							end
+						pos=pos+offset
+						local unit2= GLOBAL.SpawnPrefab("footballhat")
+						unit2.Transform:SetPosition(pos:Get())
 						end
-					pos=pos+offset
-					local unit3= GLOBAL.SpawnPrefab("hambat")
-					unit3.Transform:SetPosition(pos:Get())
-					end
-			
-				for i = 1, amtd, 1
-				do
-					local pos = GLOBAL.Vector3(inst.Transform:GetWorldPosition())
-					local offset = (GLOBAL.FindWalkableOffset(pos,math.random()*GLOBAL.PI*2, range, false))
-					if offset == nil then
-					       	return
+				
+					for i = 1, amtc, 1
+					do
+						local pos = GLOBAL.Vector3(inst.Transform:GetWorldPosition())
+						local offset = (GLOBAL.FindWalkableOffset(pos,math.random()*GLOBAL.PI*2, range, false))
+						if offset == nil then
+						       	return
+							end
+						pos=pos+offset
+						local unit3= GLOBAL.SpawnPrefab("hambat")
+						unit3.Transform:SetPosition(pos:Get())
 						end
-					pos=pos+offset
-					local unit4= GLOBAL.SpawnPrefab("amulet")
-					unit4.Transform:SetPosition(pos:Get())
+				
+					for i = 1, amtd, 1
+					do
+						local pos = GLOBAL.Vector3(inst.Transform:GetWorldPosition())
+						local offset = (GLOBAL.FindWalkableOffset(pos,math.random()*GLOBAL.PI*2, range, false))
+						if offset == nil then
+						       	return
+							end
+						pos=pos+offset
+						local unit4= GLOBAL.SpawnPrefab("amulet")
+						unit4.Transform:SetPosition(pos:Get())
+						end
+				else
+					if not announced1 then
+						GLOBAL.TheNet:Announce("Thingymajigger was alone. Nobody went to the party. Then he cri.")
+						announced1 = true
+						end
 					end
 			else
 				if not announced2 then
